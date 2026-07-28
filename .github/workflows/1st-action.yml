@@ -1,0 +1,10 @@
+name: First Workflow
+on: workflow_dispatch # waits for user to manually start
+jobs:
+  first-job:
+    runs-on: ubuntu-22.04
+  steps:
+    -  name: print greeting
+      run: echo "Hello World!"
+    -  name: print goodbye
+      run: echo "Done Goodbye"
