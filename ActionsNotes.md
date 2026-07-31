@@ -77,3 +77,42 @@ jobs:
 
 **GitHub personal access tokens**
 Settings => Developer settings => Personal access tokens => Tokens (classic)
+
+deployment.yml
+
+```yml
+name: Deploy Project
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v7.0.1
+      - name: Install NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci  # same as npm install, but only what's in the lock file
+      - name: Run tests
+        run: npm run test
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v7.0.1
+      - name: Install NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying ..."
+
+```
+Note: every job gets its own runner - basically its own virtual machine that is totally isolated from other machines and jobs.
+These jobs will run in parallel
