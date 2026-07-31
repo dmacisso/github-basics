@@ -51,3 +51,29 @@ jobs:
 ### 43. Checking Out Code in Workflows
 
 [github runners](https://docs.github.com/en/actions/concepts/runners)
+
+test.yml
+
+```yml
+name: Test Project
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v7.0.1
+      - name: Install NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci  # same as npm install, but only what's in the lock file
+      - name: Run tests
+        run: npm run test
+  
+
+```
+
+**GitHub personal access tokens**
+Settings => Developer settings => Personal access tokens => Tokens (classic)
