@@ -1,5 +1,10 @@
 ## Section 3. GitHub Actions - Basic Building Blocks & Components
 
+```bash
+# MARK: Begin
+```
+
+
 ![alt text](/github-basics/images/image.png)
 
 ### Lesson 37. Creating a First Workflow
@@ -30,6 +35,9 @@ jobs:
 
 [Github action events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
+```bash
+# MARK: Actions
+```
 ### 42. Actions
 
 - Action is a separate feature of Github actions.
@@ -56,7 +64,7 @@ test.yml
 
 ```yml
 name: Test Project
-on: push
+on: push # trigger
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -77,6 +85,10 @@ jobs:
 
 **GitHub personal access tokens**
 Settings => Developer settings => Personal access tokens => Tokens (classic)
+```bash
+# MARK: Multiple Jobs
+```
+### 47. Adding Multiple Jobs
 
 deployment.yml
 
@@ -117,11 +129,12 @@ jobs:
 Note: every job gets its own runner - basically its own virtual machine that is totally isolated from other machines and jobs.
 These jobs will run in parallel
 
+### 48 Jobs: In Parallel vs Sequential
+
 To run sequentially add needs: \<job>
 
 ```yml
 name: Deploy Project
-on: push
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -152,6 +165,43 @@ jobs:
         run: npm run build
       - name: Deploy
         run: echo "Deploying ..."
+```
+```bash
+# MARK: Multiple Triggers
+```
+### 49. Multiple Triggers
 
-
+```yml
+name: Deploy Project
+on: [push, workflow_dispatch ] #can also trigger it  manually
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v7.0.1
+      - name: Install NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci  # same as npm install, but only what's in the lock file
+      - name: Run tests
+        run: npm run test
+  deploy:
+    needs: test # run sequentially
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v7.0.1
+      - name: Install NodeJS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying ..."
 ```
