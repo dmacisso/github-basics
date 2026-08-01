@@ -133,6 +133,8 @@ These jobs will run in parallel
 
 To run sequentially add needs: \<job>
 
+deployment.yml
+
 ```yml
 name: Deploy Project
 jobs:
@@ -171,6 +173,8 @@ jobs:
 ```
 ### 49. Multiple Triggers
 
+deployment.yml
+
 ```yml
 name: Deploy Project
 on: [push, workflow_dispatch ] #can also trigger it  manually
@@ -204,4 +208,14 @@ jobs:
         run: npm run build
       - name: Deploy
         run: echo "Deploying ..."
+```
+```bash
+# MARK: Expressions
+```
+
+### 51. Expressions & Contest Objects
+
+output.yml
+
+```yml
 ```
